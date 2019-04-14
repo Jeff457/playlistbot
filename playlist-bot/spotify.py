@@ -35,6 +35,21 @@ class SpotifyPlaylist:
         self.playlist_count = Counter()
 
     def remove_tracks(self, *, playlist_id: str, n_tracks: int, **kwargs):
+        """Delete tracks from specified playlist if adding n_tracks exceeds SONG_LIMIT.
+
+        Delete n tracks from the specified playlist if the size of the
+        playlist + n_tracks exceeds SONG_LIMIT, where
+        n = len(playlist) + n_tracks - SONG_LIMIT
+
+        Also keeps track of the size of the playlist.
+
+        Args:
+            playlist_id: The playlist to add tracks to.
+            n_tracks: The number of tracks to add.
+
+        Raises:
+            SpotifyPlaylistException: n_tracks exceeds SONG_LIMIT
+        """
         playlist = self.spotify.user_playlist(
             user=self.user,
             playlist_id=playlist_id,
